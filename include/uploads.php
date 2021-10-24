@@ -2,7 +2,7 @@
 $messageResult = [];
 
 if (isset($_FILES['userfile'])) {
-    $files = $_FILES['userfile'];
+    $files = &$_FILES['userfile'];
 
     // результат: загружено больше 5 файлов
     if (count($files['name']) > 5) {
@@ -25,7 +25,7 @@ if (isset($_FILES['userfile'])) {
 
     // остальные случаи загрузки файлов
     if (count($files['name']) <= 5 && !$checkFirstFile) {
-        foreach ($files['error'] as $key => $error) {
+        foreach ($files['error'] as $key => &$error) {
             $fileExtension = pathinfo(basename($files['name'][$key]), PATHINFO_EXTENSION);
             $fileMime = substr($files['type'][$key], 6);
 
@@ -39,19 +39,19 @@ if (isset($_FILES['userfile'])) {
                 ) {
                 $fileName = IMG_DIR . $files['name'][$key];
 
+                // результат: ошибка перемещения файла
+                $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[11];
+
                 if (move_uploaded_file($files['tmp_name'][$key], $fileName)) {
                     // результат: успешная загрузка файла
                     $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[$error];
-                } else {
-                    // результат: ошибка перемещения файла
-                    $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[11];
                 }
             }
         }
     }
 }
 $allowExtension = [];
-foreach (ALLOW_EXTENSIONS as $key => $value) {
+foreach (ALLOW_EXTENSIONS as $key => &$value) {
     $allowExtension[$key] = '.' . $value;
 }
 ?>
@@ -63,6 +63,6 @@ foreach (ALLOW_EXTENSIONS as $key => $value) {
     <input type="submit" value="Отправить" class="submit-upload" />
 </form>
 <?php
-foreach ($messageResult as $key => $value) {
+foreach ($messageResult as &$value) {
     echo "<div>$value</div>";
 }
