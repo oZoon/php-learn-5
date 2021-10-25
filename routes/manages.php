@@ -1,42 +1,13 @@
 <?php
-function scanDirectory()
-{
-    $scannedDir = array_diff(scandir(IMG_DIR), array('..', '.'));
-    natcasesort($scannedDir);
-    return array_merge($scannedDir);
-}
-
 $imageDirectoryContent = scanDirectory();
 if (isset($_POST['deleteFiles'])) {
-    // var_dump($_POST['deleteFiles']);
     $result = array_intersect($_POST['deleteFiles'], $imageDirectoryContent);
     if (in_array('all', $_POST['deleteFiles'])) {
         $result = $imageDirectoryContent;
     }
-    // echo '<plaintext>';
-    // var_dump($result);
     for ($i = 0; $i < count($result); $i++) {
-        echo $i . ': ' . $result[$i] . '<br />';
-        // var_dump(IMG_DIR . $result[$i]);
-        // unlink(IMG_DIR . $result[$i]);
+        unlink(IMG_DIR . $result[$i]);
     }
-}
-
-
-function showSize($fileName)
-{
-    $result = '';
-    $size = filesize(IMG_DIR . $fileName);
-    if ($size < 10000) {
-        $result = number_format($size, 0, '', ' ') . ' b';
-    }
-    if ($size < 1000000) {
-        $result = number_format($size / 1000, 3, '.', '') . ' Kb';
-    }
-    if ($size < 2000000) {
-        $result = number_format($size / 1000000, 3, '.', '') . ' Mb';
-    }
-    return $result;
 }
 
 $imageDirectoryContent = scanDirectory();
@@ -69,8 +40,16 @@ echo (count($imageDirectoryContent) >= 1) ?
 <?php
 echo (count($imageDirectoryContent) >= 1) ?
 '   <div class="submit-manage">
-        <span>удалить все <input type="checkbox" value="all" name="deleteFiles[]" /></span>
-        <input type="submit" value="удалить" />
+        <div style="width: 110px;">удалить все <input type="checkbox" value="all" name="deleteFiles[]" /></div>
+        <input type="submit" value="удалить" style="width: 110px; margin-top: 12px;" />
     </div>
 </form>' :
 '';
+$fileShow = explode('/', urldecode($_SERVER['REQUEST_URI']));
+if (isset($fileShow[2]) && mb_strlen($fileShow[2]) > 1 && is_file(IMG_DIR . $fileShow[2])) {
+    list($width, $height, $type, $attr) = getimagesize(IMG_DIR . $fileShow[2]); ?>
+<div style="display: flex; justify-content: center; margin-top: 24px;">
+    <img src="/upload/<?= $fileShow[2] ?>" <?= $attr ?>>
+</div>
+    <?php
+}

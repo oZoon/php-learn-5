@@ -31,20 +31,34 @@ if (isset($_FILES['userfile'])) {
 
             // результат: соответствующая ошибка загрузки файла
             $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[$error];
+            $checkTypeFile = in_array($fileExtension, ALLOW_EXTENSIONS) && in_array($fileMime, ALLOW_EXTENSIONS);
 
-            if (
-                $error == UPLOAD_ERR_OK &&
-                in_array($fileExtension, ALLOW_EXTENSIONS) &&
-                in_array($fileMime, ALLOW_EXTENSIONS)
-                ) {
-                $fileName = IMG_DIR . $files['name'][$key];
+            // результат: несоответствующий тип файла (не изображение)
+            if ($error == UPLOAD_ERR_OK && !$checkTypeFile) {
+                $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[13];
+            }
+
+            if ($error == UPLOAD_ERR_OK && $checkTypeFile) {
+                $newFileName = preg_replace(
+                    '/[^a-zA-Z0-9-_]/',
+                    '_',
+                    pathinfo(
+                        basename($files['name'][$key]),
+                        PATHINFO_FILENAME
+                    )
+                ) . '.' . $fileExtension;
+                $file = IMG_DIR . $newFileName;
 
                 // результат: ошибка перемещения файла
                 $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[11];
 
-                if (move_uploaded_file($files['tmp_name'][$key], $fileName)) {
+                if (move_uploaded_file($files['tmp_name'][$key], $file)) {
                     // результат: успешная загрузка файла
                     $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[$error];
+                    if ($newFileName != $files['name'][$key]) {
+                        // добавлено: переименование файла
+                        $messageResult[$key] .= UPLOAD_ERROR[12] . $newFileName;
+                    }
                 }
             }
         }

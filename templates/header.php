@@ -13,7 +13,7 @@
     $result = '<div class="div-menu">';
     for ($i = 0; $i < count(MENU); $i++) {
         $result .= '<a class="menu';
-        if (MENU[$i]['path'] == getQueryString()) {
+        if (MENU[$i]['path'] == $route) {
             $result .= ' menu-active';
         }
         $result .= '"  href="/' . MENU[$i]['path'] . '">' . MENU[$i]['title'] . '</a> ';
