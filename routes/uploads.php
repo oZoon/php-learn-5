@@ -4,8 +4,8 @@ $messageResult = [];
 if (isset($_FILES['userfile'])) {
     $files = &$_FILES['userfile'];
 
-    // результат: загружено больше 5 файлов
-    if (count($files['name']) > 5) {
+    // результат: загружено больше LIMIT_FILE_COUNT файлов (5 файлов)
+    if (count($files['name']) > LIMIT_FILE_COUNT) {
         $messageResult[0] = UPLOAD_ERROR[10];
     }
 
@@ -24,10 +24,10 @@ if (isset($_FILES['userfile'])) {
     }
 
     // остальные случаи загрузки файлов
-    if (count($files['name']) <= 5 && !$checkFirstFile) {
+    if (count($files['name']) <= LIMIT_FILE_COUNT && !$checkFirstFile) {
         foreach ($files['error'] as $key => &$error) {
             $fileExtension = pathinfo(basename($files['name'][$key]), PATHINFO_EXTENSION);
-            $fileMime = substr($files['type'][$key], 6);
+            $fileMime = substr(mime_content_type($files['tmp_name'][$key], 6));
 
             // результат: соответствующая ошибка загрузки файла
             $messageResult[$key] = $files['name'][$key] . ': ' . UPLOAD_ERROR[$error];

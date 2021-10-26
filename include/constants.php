@@ -1,6 +1,7 @@
 <?php
 define('IMG_DIR', $_SERVER['DOCUMENT_ROOT'] . '/upload/');
 define('LIMIT_FILE_SIZE', 2000000);
+define('LIMIT_FILE_COUNT', 5);
 define('UPLOAD_ERROR', array(
     0 => 'Успех - файл загружен на сервер',
     1 => 'Ошибка сервера - размер файла превышает максимально разрешенный размер',
