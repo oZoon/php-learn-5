@@ -1,8 +1,11 @@
 <?php
+session_start();
+$isLogged = isset($_SESSION['logged']) && $_SESSION['logged'] == true;
+
 include $_SERVER['DOCUMENT_ROOT'] . '/include/constants.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/include/helpers.php';
 
-$route = substr(urldecode($_SERVER['REQUEST_URI']), 0, 8) == '/uploads' ? 'uploads' : 'manages';
+$route = getRoute();
 
 include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/routes/' . $route . '.php';

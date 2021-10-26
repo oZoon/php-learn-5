@@ -18,7 +18,13 @@ define('UPLOAD_ERROR', array(
     13 => 'Ошибка - файл несоответствующего типа',
 ));
 define('MENU', array(
-    ['title' => 'Управление картинками', 'path' => 'manages'],
-    ['title' => 'Загрузка картинок', 'path' => 'uploads'],
+    'leftSide' => [
+        ['title' => 'Управление картинками', 'path' => 'manages'],
+        ['title' => 'Загрузка картинок', 'path' => 'uploads'],
+    ],
+    'rightSide' => [
+        ['title' => 'Авторизация', 'path' => 'login', 'type' => 'menu'],
+        ['title' => 'Выход', 'path' => 'logout', 'type' => 'logout'],
+    ],
 ));
 define('ALLOW_EXTENSIONS', array('jpeg', 'png', 'jpg'));
