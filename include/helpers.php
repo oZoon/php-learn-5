@@ -42,3 +42,34 @@ function getRoute()
     }
     return $route;
 }
+
+$auth = [
+    ['login' => '1@bk.ru', 'password' => '1',],
+    ['login' => '2@bk.ru', 'password' => '2',],
+    ['login' => '3@bk.ru', 'password' => '3',],
+    ['login' => '4@bk.ru', 'password' => '4',],
+    ['login' => '5@bk.ru', 'password' => '5',],
+];
+
+function updateCookie($login = null)
+{
+    global $auth;
+    $loginArray = [];
+    $result = '';
+
+    foreach ($auth as $key => $value) {
+        $loginArray[$key] = $value['login'];
+    }
+
+    if ($login != null) {
+        $result = $login;
+    }
+
+    if (isset($_COOKIE['login']) && in_array($_COOKIE['login'], $loginArray)) {
+        $result = $_COOKIE['login'];
+    }
+
+    if ($result != '') {
+        setcookie('login', $result, time() + 60 * 60 * 24 * 30, '/');
+    }
+}
