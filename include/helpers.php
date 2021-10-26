@@ -21,3 +21,24 @@ function showSize($fileName)
     }
     return $result;
 }
+
+function getRoute()
+{
+    switch (substr(urldecode($_SERVER['REQUEST_URI']), 0, 8)) {
+        case '/uploads':
+            $route = 'uploads';
+            break;
+        case '/manages':
+            $route = 'manages';
+            break;
+        case '/login':
+            $route = 'login';
+            break;
+        case '/logout':
+            $route = 'logout';
+            break;
+        default:
+            $route = 'manages';
+    }
+    return $route;
+}
