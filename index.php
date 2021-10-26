@@ -5,6 +5,7 @@ $isLogged = isset($_SESSION['logged']) && $_SESSION['logged'] == true;
 include $_SERVER['DOCUMENT_ROOT'] . '/include/constants.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/include/helpers.php';
 
+updateCookie(null, $auth);
 $route = getRoute();
 
 include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
