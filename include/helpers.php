@@ -51,9 +51,8 @@ $auth = [
     ['login' => '5@bk.ru', 'password' => '5',],
 ];
 
-function updateCookie($login = null)
+function updateCookie($login = null, &$auth)
 {
-    global $auth;
     $loginArray = [];
     $result = '';
 

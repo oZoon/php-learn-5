@@ -41,6 +41,13 @@ a.disabled {
   align-items: center;
 }
 
+.login-error {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
 .form-upload {
   display: flex;
   flex-direction: column;
